@@ -1,0 +1,100 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String       @id @default(uuid())
+  name      String
+  username  String    @unique
+  password  String
+  type      UserType  @default(PARENT)
+  
+  contract    Contract?
+  
+  addressId    String   @unique
+  address      Address  @relation(fields: [addressId], references: [id])
+}
+
+enum UserType {
+  DRIVER
+  PARENT
+}
+
+model Address {
+  id          String       @id @default(uuid())
+  user        User?
+  school      School?
+
+  street        String
+  number        String
+  complement    String
+  neighborhood  String
+  city          String
+  state         String
+  postalCode    String
+}
+
+model School {
+  id        String       @id @default(uuid())
+  phone     String
+  
+  addressId    String   @unique
+  address      Address  @relation(fields: [addressId], references: [id])
+
+  routes     Route[]
+  contract    Contract?
+}
+
+model Route {
+  id          String       @id @default(uuid())
+  schools     School[]
+
+  departureTime   String
+  returnTime      String
+
+  contract    Contract?
+}
+
+model Contract {
+  id                String       @id @default(uuid())
+  student           String
+  monthlyPayment    Int
+  startDate         DateTime
+  active            Boolean
+
+  parentId    String       @unique
+  parent      User  @relation(fields: [parentId], references: [id])
+  
+  routeId    String       @unique
+  route      Route  @relation(fields: [routeId], references: [id])
+  
+  schoolId    String       @unique
+  school      School  @relation(fields: [schoolId], references: [id])
+  
+  paymentId    String       @unique
+  payment      Payment  @relation(fields: [paymentId], references: [id])
+}
+
+model Payment {
+  id          String       @id @default(uuid())
+  contract    Contract?
+
+  date              DateTime
+  value             Int
+  method            PaymentMethod
+  referringMonth    String
+}
+
+enum PaymentMethod {
+  PIX
+  CREDIT_CARD
+  CASH
+}
