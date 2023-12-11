@@ -44,6 +44,7 @@ model Address {
 
 model School {
   id        String       @id @default(uuid())
+  name     String
   phone     String
   
   addressId    String   @unique
