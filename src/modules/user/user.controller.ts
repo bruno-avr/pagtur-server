@@ -15,4 +15,9 @@ export class UserController {
   findUsername(@Body() data: LoginType) {
     return this.userService.login(data);
   }
+  
+  @Get('parents')
+  findParents() {
+    return this.userService.findParents();
+  }
 }

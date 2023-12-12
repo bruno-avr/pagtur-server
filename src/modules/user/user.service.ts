@@ -59,4 +59,12 @@ export class UserService {
       id: user.id
     }
   }
+
+  async findParents() {
+    const parents = await this.prisma.user.findMany({
+      where: { type: 'PARENT' }
+    })
+
+    return { parents }
+  }
 }
