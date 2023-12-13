@@ -4,27 +4,23 @@ import { PrismaService } from '../../database/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
-export class RouteService {
+export class ContractService {
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService
     ) {}
 
-  async create(data: Prisma.RouteCreateInput) {
-    const route = await this.prisma.route.create({
+  async create(data: Prisma.ContractCreateInput) {
+    const contract = await this.prisma.contract.create({
       data
     })
-    return route;
+    return contract;
   }
   
   async findAll() {
-    const routes = await this.prisma.route.findMany({
-      include: {
-        schools: true
-      }
-    })
+    const contracts = await this.prisma.contract.findMany({})
     return {
-      routes
+      contracts
     };
   }
 }

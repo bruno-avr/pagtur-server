@@ -67,4 +67,16 @@ export class UserService {
 
     return { parents }
   }
+
+  async findOne(id: string) {
+    const user = await this.prisma.user.findFirst({
+      where: { id }
+    })
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    return user
+  }
 }

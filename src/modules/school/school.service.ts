@@ -11,10 +11,10 @@ export class SchoolService {
     ) {}
 
   async create(data: Prisma.SchoolCreateInput) {
-    const address = await this.prisma.school.create({
+    const school = await this.prisma.school.create({
       data
     })
-    return address;
+    return school;
   }
   
   async findAll() {

@@ -5,9 +5,10 @@ import { APP_FILTER } from '@nestjs/core';
 import { AllExceptionsFilter } from './exception.filter';
 import { SchoolModule } from './modules/school/school.module';
 import { RouteModule } from './modules/route/route.module';
+import { ContractModule } from './modules/contract/contract.module';
 
 @Module({
-  imports: [UserModule, AddressModule, SchoolModule, RouteModule],
+  imports: [UserModule, AddressModule, SchoolModule, RouteModule, ContractModule],
   controllers: [],
   providers: [{
     provide: APP_FILTER,

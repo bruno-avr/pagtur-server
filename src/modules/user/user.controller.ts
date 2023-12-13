@@ -20,4 +20,9 @@ export class UserController {
   findParents() {
     return this.userService.findParents();
   }
+  
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.userService.findOne(id);
+  }
 }
