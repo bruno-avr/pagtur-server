@@ -21,7 +21,11 @@ export class RouteService {
     const routes = await this.prisma.route.findMany({
       include: {
         schools: true
-      }
+      },
+      orderBy: [
+        { departureTime: 'asc' },
+        { returnTime: 'asc' },
+      ]
     })
     return {
       routes

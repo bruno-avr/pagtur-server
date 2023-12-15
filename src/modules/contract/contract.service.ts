@@ -18,9 +18,80 @@ export class ContractService {
   }
   
   async findAll() {
-    const contracts = await this.prisma.contract.findMany({})
+    const contracts = await this.prisma.contract.findMany({
+      include: {
+        parent: {
+          include: {
+            address: true
+          }
+        },
+        payments: true,
+        route: true,
+        school: true
+      }
+    })
     return {
       contracts
     };
+  }
+  
+  async findOne(id: string) {
+    return await this.prisma.contract.findFirst({
+      where: { id },
+      include: {
+        parent: {
+          include: {
+            address: true
+          }
+        },
+        payments: {
+          orderBy: {
+            referringMonth: 'desc'
+          }
+        },
+        route: {
+          include: {
+            schools: true
+          }
+        },
+        school: {
+          include: {
+            address: true
+          }
+        }
+      }
+    });
+  }
+  
+  async findAllByParent(parentId: string) {
+    const contracts = await this.prisma.contract.findMany({
+      where: { parentId },
+      include: {
+        parent: {
+          include: {
+            address: true
+          }
+        },
+        payments: true,
+        route: true,
+        school: true
+      },
+      orderBy: [
+        { active: 'desc' },
+        { student: 'asc' },
+      ]
+    })
+    return {
+      contracts
+    };
+  }
+  
+  async deactivate(id: string) {
+    await this.prisma.contract.update({
+      where: { id },
+      data: {
+        active: false
+      }
+    })
   }
 }

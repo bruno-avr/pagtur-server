@@ -15,4 +15,19 @@ export class ContractController {
   findAll() {
     return this.contractService.findAll();
   }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.contractService.findOne(id);
+  }
+
+  @Get('parent/:id')
+  findAllByParent(@Param('id') id: string) {
+    return this.contractService.findAllByParent(id);
+  }
+
+  @Post('deactivate/:id')
+  deactivate(@Param('id') id: string) {
+    return this.contractService.deactivate(id);
+  }
 }

@@ -13,6 +13,7 @@ datasource db {
 generator erd {
   provider = "prisma-erd-generator"
   output = "ERD.pdf"
+  disabled = true
 }
 
 model User {
@@ -22,7 +23,7 @@ model User {
   password  String
   type      UserType  @default(PARENT)
   
-  contract    Contract?
+  contract    Contract[]
   
   addressId    String   @unique
   address      Address  @relation(fields: [addressId], references: [id])
@@ -40,7 +41,7 @@ model Address {
 
   street        String
   number        String
-  complement    String
+  complement    String?
   neighborhood  String
   city          String
   state         String
@@ -56,7 +57,7 @@ model School {
   address      Address  @relation(fields: [addressId], references: [id])
 
   routes     Route[]
-  contract    Contract?
+  contract    Contract[]
 }
 
 model Route {
@@ -66,7 +67,7 @@ model Route {
   departureTime   String
   returnTime      String
 
-  contract    Contract?
+  contract    Contract[]
 }
 
 model Contract {
@@ -76,27 +77,28 @@ model Contract {
   startDate         DateTime
   active            Boolean
 
-  parentId    String       @unique
+  parentId    String
   parent      User  @relation(fields: [parentId], references: [id])
   
-  routeId    String       @unique
+  routeId    String
   route      Route  @relation(fields: [routeId], references: [id])
   
-  schoolId    String       @unique
+  schoolId    String
   school      School  @relation(fields: [schoolId], references: [id])
   
-  paymentId    String       @unique
-  payment      Payment  @relation(fields: [paymentId], references: [id])
+  payments    Payment[]
 }
 
 model Payment {
   id          String       @id @default(uuid())
-  contract    Contract?
 
   date              DateTime
   value             Int
   method            PaymentMethod
   referringMonth    String
+  
+  contract          Contract    @relation(fields: [contractId], references: [id])
+  contractId        String
 }
 
 enum PaymentMethod {

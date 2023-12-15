@@ -18,7 +18,14 @@ export class SchoolService {
   }
   
   async findAll() {
-    const schools = await this.prisma.school.findMany({})
+    const schools = await this.prisma.school.findMany({
+      include: {
+        address: true
+      },
+      orderBy: [
+        { name: 'asc' }
+      ]
+    })
     return {
       schools
     };
