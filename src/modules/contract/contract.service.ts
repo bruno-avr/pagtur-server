@@ -46,7 +46,7 @@ export class ContractService {
         },
         payments: {
           orderBy: {
-            referringMonth: 'desc'
+            referringMonth: 'asc'
           }
         },
         route: {

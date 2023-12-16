@@ -6,9 +6,10 @@ import { AllExceptionsFilter } from './exception.filter';
 import { SchoolModule } from './modules/school/school.module';
 import { RouteModule } from './modules/route/route.module';
 import { ContractModule } from './modules/contract/contract.module';
+import { PaymentModule } from './modules/payment/payment.module';
 
 @Module({
-  imports: [UserModule, AddressModule, SchoolModule, RouteModule, ContractModule],
+  imports: [UserModule, AddressModule, SchoolModule, RouteModule, ContractModule, PaymentModule],
   controllers: [],
   providers: [{
     provide: APP_FILTER,
