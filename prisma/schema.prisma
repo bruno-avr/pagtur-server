@@ -13,7 +13,7 @@ datasource db {
 generator erd {
   provider = "prisma-erd-generator"
   output = "ERD.pdf"
-  disabled = true
+  disabled = false
 }
 
 model User {
@@ -99,6 +99,7 @@ model Payment {
   
   contract          Contract    @relation(fields: [contractId], references: [id])
   contractId        String
+  confirmant        UserType    @default(DRIVER)
 }
 
 enum PaymentMethod {
