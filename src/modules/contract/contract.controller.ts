@@ -16,14 +16,15 @@ export class ContractController {
     return this.contractService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.contractService.findOne(id);
-  }
-
   @Get('parent/:id')
   findAllByParent(@Param('id') id: string) {
     return this.contractService.findAllByParent(id);
+  }
+
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.contractService.findOne(id);
   }
 
   @Post('deactivate/:id')

@@ -36,7 +36,7 @@ export class ContractService {
   }
   
   async findOne(id: string) {
-    return await this.prisma.contract.findFirst({
+    const res = await this.prisma.contract.findFirst({
       where: { id },
       include: {
         parent: {
@@ -44,11 +44,7 @@ export class ContractService {
             address: true
           }
         },
-        payments: {
-          orderBy: {
-            referringMonth: 'asc'
-          }
-        },
+        payments: true,
         route: {
           include: {
             schools: true
@@ -61,6 +57,16 @@ export class ContractService {
         }
       }
     });
+    if (res?.payments) {
+      function compareDates(a: any, b: any) {
+        const dateA = new Date(a.referringMonth.replace(/(\d{2})\/(\d{4})/, "$2-$1"));
+        const dateB = new Date(b.referringMonth.replace(/(\d{2})\/(\d{4})/, "$2-$1"));
+      
+        return dateB.getTime() - dateA.getTime();
+      }
+      res.payments.sort(compareDates)
+    }
+    return res
   }
   
   async findAllByParent(parentId: string) {

@@ -10,4 +10,9 @@ export class PaymentController {
   create(@Body() data: Prisma.PaymentCreateInput) {
     return this.paymentService.create(data);
   }
+
+  @Get('/data')
+  getData() {
+    return this.paymentService.getData();
+  }
 }
